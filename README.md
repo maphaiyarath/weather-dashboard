@@ -13,7 +13,6 @@ You can see the deployed app [here](https://maphaiyarath.github.io/weather-dashb
 ## Description
 This weather dashboard uses the OpenWeather API to display current and future weather conditions for any city.
 
-
 ## Installation
 n/a
 
