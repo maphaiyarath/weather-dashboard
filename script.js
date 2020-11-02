@@ -22,6 +22,8 @@ var api = '5b4ffa60539e06714e2f431edfcd0ba0';
 var city = '';
 var cityForm = $("#city-form");
 var cityInput = $("#city-input");
+var cityName = $("#city-name");
+var date = new Date();
 
 
 
@@ -37,12 +39,69 @@ function getWeather(thisCity) {
 
     $.ajax({
         url,
-        method: "GET"
+        method: "GET",
+        statusCode: {
+            404: function() {
+                cityName.html('City not found - please try again.');
+            }
+        }
     }).then(function(response) {
-        console.log(url);
-        console.log(response);
+        var fullDate = date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear();
+        console.log(response.weather[0].id);
+        cityName.html(response.name + ' ' + fullDate + ' ' + getEmoji(response.weather[0].id));
     });
 }
+
+function getEmoji(weatherId) {
+    var id = parseInt(weatherId);
+    // thunderstorm
+    if (id >= 200 && id <= 232) {
+        return '🌩️';
+    
+    // drizzle
+    } else if ((id >= 300 && id <= 321) || (id >= 520 && id <= 531)) {
+        return '🌧️';
+
+    // rain
+    } else if (id >= 500 && id <= 504) {
+        return '🌦️';
+
+    // snow
+    } else if (id === 511 || (id >= 600 && id <= 622)) {
+        return '❄️';
+
+    // atmosphere
+    } else if (id >= 701 && id <= 781) {
+        return '🌫️';
+    
+    // clear
+    } else if (id === 800) {
+        return '☀️';
+    
+    // clouds
+    } else if (id === 801) {
+        return '⛅';
+
+    // clouds
+    } else if (id >= 802 && id <= 804) {
+        return '☁️';
+    }
+}
+
+/*
+statusCode: {
+    404: function() {
+      alert( "page not found" );
+    }
+  }
+success: function(returnData){
+         var res = JSON.parse(returnData);
+     },
+     error: function(xhr, status, error){
+         var errorMessage = xhr.status + ': ' + xhr.statusText
+         alert('Error - ' + errorMessage);
+     }
+*/
 
 /*
 <div class="card" style="width: 18rem;">
