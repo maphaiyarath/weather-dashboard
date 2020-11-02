@@ -1,7 +1,4 @@
 /*
-WHEN I click on a city in the search history
-THEN I am again presented with current and future conditions for that city
-
 WHEN I open the weather dashboard
 THEN I am presented with the last searched city forecast
 */
@@ -98,15 +95,15 @@ function generateFutureForecast(thisCity) {
         futureForecast.append(titleRow);
 
         var forecastTitle = $("<h3>");
+        forecastTitle.addClass("card-title");
         forecastTitle.html('5-Day Forecast:');
         titleRow.append(forecastTitle);
         
         var daysRow = $("<div>");
-        daysRow.addClass("row");
+        daysRow.addClass("row card-text");
         futureForecast.append(daysRow);
 
         for (var i = 7; i < res.list.length; i += 8) {
-            
             var dayCard = $("<div>");
             dayCard.addClass("card bg-future col-7 col-sm-6 col-md-6 col-lg-4");
             daysRow.append(dayCard);
@@ -177,8 +174,9 @@ function getUV(lat, lon) {
     });
 }
 
+// when the user clicks on a city in the search history, then they are presented w/ current and future conditions for that city
 searchList.on("click", function(event) {
-    console.log($(this));
+    getWeather($(event.target).data('city'));
 });
 
 // that city is added to the search history
