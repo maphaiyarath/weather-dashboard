@@ -87,7 +87,7 @@ function getWeather(thisCity) {
 
 // a 5-day forecast w/ conditions like temp and humidity
 function generateFutureForecast(thisCity) {
-    var url = 'http://api.openweathermap.org/data/2.5/forecast?q=' + thisCity + '&appid=' + api;
+    var url = 'https://api.openweathermap.org/data/2.5/forecast?q=' + thisCity + '&appid=' + api;
     futureForecast.empty();
     $.ajax({
         url,
@@ -149,7 +149,7 @@ function generateFutureForecast(thisCity) {
 }
 
 function getUV(lat, lon) {
-    var url = 'http://api.openweathermap.org/data/2.5/uvi?lat=' + lat + '&lon=' + lon + '&appid=' + api;
+    var url = 'https://api.openweathermap.org/data/2.5/uvi?lat=' + lat + '&lon=' + lon + '&appid=' + api;
 
     $.ajax({
         url,
