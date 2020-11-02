@@ -45,7 +45,7 @@ function getWeather(thisCity) {
         var cityName = $("<h2>");
         cityName.addClass("card-title");
         var city = response.name;
-        var fullDate = date.getMonth() + '/' + date.getDate() + '/' + date.getFullYear();
+        var fullDate = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
         var emoji = getEmoji(response.weather[0].id);
         cityName.html(city + ' ' + fullDate + ' ' + emoji);
         cityInfo.append(cityName);
@@ -88,24 +88,31 @@ function getWeather(thisCity) {
 // a 5-day forecast w/ conditions like temp and humidity
 function generateFutureForecast(thisCity) {
     var url = 'http://api.openweathermap.org/data/2.5/forecast?q=' + thisCity + '&appid=' + api;
-
+    futureForecast.empty();
     $.ajax({
         url,
         method: "GET"
     }).then(function(res) {
+        var titleRow = $("<div>");
+        titleRow.addClass("row");
+        futureForecast.append(titleRow);
+
         var forecastTitle = $("<h3>");
         forecastTitle.html('5-Day Forecast:');
-        futureForecast.append(forecastTitle);
-        console.log(url);
-        var days = res.list;
+        titleRow.append(forecastTitle);
+        
+        var daysRow = $("<div>");
+        daysRow.addClass("row");
+        futureForecast.append(daysRow);
+
         for (var i = 7; i < res.list.length; i += 8) {
             
             var dayCard = $("<div>");
-            dayCard.addClass("card");
-            futureForecast.append(dayCard);
+            dayCard.addClass("card bg-future col-7 col-sm-6 col-md-6 col-lg-4");
+            daysRow.append(dayCard);
             
             var dayContent = $("<div>");
-            dayContent.addClass("card-body bg-future text-center");
+            dayContent.addClass("card-body text-center");
             //dayContent.attr("style", "background-color: lightskyblue; color: white;");
             dayCard.append(dayContent);
 
@@ -114,7 +121,8 @@ function generateFutureForecast(thisCity) {
             dayDate.addClass("card-title");
             // var fullDate = date.getMonth() + '/' + (date.getDate() + i + 1) + '/' + date.getFullYear();
             var fullDate = res.list[i].dt_txt;
-            dayDate.html(fullDate);
+            fullDate = fullDate.split(' ');
+            dayDate.html(fullDate[0]);
             dayContent.append(dayDate);
             
             // an icon representation of weather conditions
@@ -128,7 +136,7 @@ function generateFutureForecast(thisCity) {
             var temp = $("<p>");
             var tempCalc = parseInt(res.list[i].main.temp) * 9 / 5 - 459.67;
             temp.addClass("card-text");
-            temp.html('Temperature: ' + tempCalc.toFixed(2) + '°F');
+            temp.html('Temp: ' + tempCalc.toFixed(2) + '°F');
             dayContent.append(temp);
 
             // the humidity

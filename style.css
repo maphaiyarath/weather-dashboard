@@ -2,6 +2,10 @@ header {
     color: white;
 }
 
+input {
+    width: 150px;
+}
+
 .card {
     margin: 5px;
 }
