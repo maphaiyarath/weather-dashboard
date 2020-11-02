@@ -2,9 +2,6 @@
 WHEN I search for a city
 THEN I am presented with current and future conditions for that city and that city is added to the search history
 
-WHEN I view future weather conditions for that city
-THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity
-
 WHEN I click on a city in the search history
 THEN I am again presented with current and future conditions for that city
 
@@ -16,6 +13,7 @@ var api = '5b4ffa60539e06714e2f431edfcd0ba0';
 var cityForm = $("#city-form");
 var cityInfo = $(".city-info");
 var cityInput = $("#city-input");
+var futureForecast = $("#future-forecast");
 var date = new Date();
 var searchList = $(".search-list");
 
@@ -85,7 +83,53 @@ function getWeather(thisCity) {
         uvEl.append(uvSpan);
         
         addToSearchList(city);
+        generateFutureForecast(city);
     });
+}
+
+// a 5-day forecast
+function generateFutureForecast(thisCity) {
+    var url = 'http://api.openweathermap.org/data/2.5/forecast?q=' + thisCity + '&appid=' + api;
+
+    $.ajax({
+        url,
+        method: "GET"
+    }).then(function(res) {
+        var forecastTitle = $("<h3>");
+        forecastTitle.html('5-Day Forecast:');
+        futureForecast.append(forecastTitle);
+        console.log(url);
+        var days = res.list;
+        for (var i = 7; i < res.list.length; i += 8) {
+            
+            var dayCard = $("<div>");
+            dayCard.addClass("card");
+            futureForecast.append(dayCard);
+            
+            var dayContent = $("<div>");
+            dayContent.addClass("card-body");
+            dayCard.append(dayContent);
+
+            // the date
+            var dayDate = $("<h5>");
+            dayDate.addClass("card-title");
+            // var fullDate = date.getMonth() + '/' + (date.getDate() + i + 1) + '/' + date.getFullYear();
+            var fullDate = res.list[i].dt_txt;
+            dayDate.html(fullDate);
+            dayContent.append(dayDate);
+            
+            // an icon representation of weather conditions
+            var dayEmoji = $("<p>");
+            dayEmoji.addClass("card-text");
+            var emoji = getEmoji(res.list[i].weather[0].id);
+            dayEmoji.html(emoji);
+            dayContent.append(dayEmoji);
+
+            // the temperature
+            
+            // the humidity
+        }
+    })
 }
 
 function getUV(lat, lon) {
@@ -116,6 +160,10 @@ function getUV(lat, lon) {
         }
     });
 }
+
+searchList.on("click", function(event) {
+    console.log($(this));
+});
 
 function addToSearchList(thisCity) {
     var newCity = $("<li>");
