@@ -10,6 +10,11 @@ span {
     color: black;
 }
 
+.bg-future {
+    background-color: lightskyblue;
+    color: white;
+}
+
 .uv-low {
     background-color: green;
 }

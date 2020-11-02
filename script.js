@@ -1,7 +1,4 @@
 /*
-WHEN I search for a city
-THEN I am presented with current and future conditions for that city and that city is added to the search history
-
 WHEN I click on a city in the search history
 THEN I am again presented with current and future conditions for that city
 
@@ -24,6 +21,7 @@ cityForm.on("submit", function(event) {
     getWeather(city);
 });
 
+// current conditions for that city
 function getWeather(thisCity) {
     var url = 'https://api.openweathermap.org/data/2.5/weather?q=' + thisCity + '&appid=' + api;
 
@@ -87,7 +85,7 @@ function getWeather(thisCity) {
     });
 }
 
-// a 5-day forecast
+// a 5-day forecast w/ conditions like temp and humidity
 function generateFutureForecast(thisCity) {
     var url = 'http://api.openweathermap.org/data/2.5/forecast?q=' + thisCity + '&appid=' + api;
 
@@ -107,7 +105,8 @@ function generateFutureForecast(thisCity) {
             futureForecast.append(dayCard);
             
             var dayContent = $("<div>");
-            dayContent.addClass("card-body");
+            dayContent.addClass("card-body bg-future text-center");
+            //dayContent.attr("style", "background-color: lightskyblue; color: white;");
             dayCard.append(dayContent);
 
             // the date
@@ -125,9 +124,18 @@ function generateFutureForecast(thisCity) {
             dayEmoji.html(emoji);
             dayContent.append(dayEmoji);
 
-            // the temperature
-            
+            // the temperature, converted from kelvin to fahrenheit
+            var temp = $("<p>");
+            var tempCalc = parseInt(res.list[i].main.temp) * 9 / 5 - 459.67;
+            temp.addClass("card-text");
+            temp.html('Temperature: ' + tempCalc.toFixed(2) + '°F');
+            dayContent.append(temp);
+
             // the humidity
+            var humidity = $("<p>");
+            humidity.addClass("card-text");
+            humidity.html('Humidity: ' + res.list[i].main.humidity + '%');
+            dayContent.append(humidity);
         }
     })
 }
@@ -165,6 +173,7 @@ searchList.on("click", function(event) {
     console.log($(this));
 });
 
+// that city is added to the search history
 function addToSearchList(thisCity) {
     var newCity = $("<li>");
     newCity.addClass("list-group-item");
