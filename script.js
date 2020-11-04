@@ -1,9 +1,8 @@
-/*
-WHEN I open the weather dashboard
-THEN I am presented with the last searched city forecast
-*/
+// WHEN I open the weather dashboard THEN I am presented with the last searched city forecast
+// need to fix date on future cards
 
 var api = '5b4ffa60539e06714e2f431edfcd0ba0';
+var cities = [];
 var cityForm = $("#city-form");
 var cityInfo = $(".city-info");
 var cityInput = $("#city-input");
@@ -11,14 +10,17 @@ var futureForecast = $("#future-forecast");
 var date = new Date();
 var searchList = $(".search-list");
 
+// WHEN I search for a city
 cityForm.on("submit", function(event) {
     event.preventDefault();
-    city = cityInput.val();
+    city = cityInput.val().trim();
 
+    // THEN I am presented with current and future conditions for that city
     getWeather(city);
+    cityInput.val('');
 });
 
-// current conditions for that city
+// WHEN I view current weather conditions for that city
 function getWeather(thisCity) {
     var url = 'https://api.openweathermap.org/data/2.5/weather?q=' + thisCity + '&appid=' + api;
 
@@ -28,6 +30,7 @@ function getWeather(thisCity) {
         statusCode: {
             404: function() {
                 cityInfo.empty();
+                futureForecast.empty();
 
                 var cityName = $("<h2>");
                 cityName.addClass("card-title");
@@ -38,13 +41,13 @@ function getWeather(thisCity) {
     }).then(function(response) {
         cityInfo.empty();
 
-        // the city name, the date, and the corresponding emoji
+        // the city name, the date, and an icon representation of weather conditions
         var cityName = $("<h2>");
         cityName.addClass("card-title");
         var city = response.name;
         var fullDate = (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
         var emoji = getEmoji(response.weather[0].id);
-        cityName.html(city + ' ' + fullDate + ' ' + emoji);
+        cityName.html(city + ' (' + fullDate + ') ' + emoji);
         cityInfo.append(cityName);
 
         // the temperature, converted from kelvin to fahrenheit
@@ -77,12 +80,15 @@ function getWeather(thisCity) {
         var uvIndex = getUV(response.coord.lat, response.coord.lon);
         uvEl.append(uvSpan);
         
-        addToSearchList(city);
+        if (!cities.includes(city)) {
+            addToSearchList(city);
+        }
+        
         generateFutureForecast(city);
     });
 }
 
-// a 5-day forecast w/ conditions like temp and humidity
+// WHEN I view future weather conditions for that city, THEN I am presented with a 5-day forecast
 function generateFutureForecast(thisCity) {
     var url = 'https://api.openweathermap.org/data/2.5/forecast?q=' + thisCity + '&appid=' + api;
     futureForecast.empty();
@@ -110,16 +116,15 @@ function generateFutureForecast(thisCity) {
             
             var dayContent = $("<div>");
             dayContent.addClass("card-body text-center");
-            //dayContent.attr("style", "background-color: lightskyblue; color: white;");
             dayCard.append(dayContent);
 
             // the date
             var dayDate = $("<h5>");
             dayDate.addClass("card-title");
-            // var fullDate = date.getMonth() + '/' + (date.getDate() + i + 1) + '/' + date.getFullYear();
             var fullDate = res.list[i].dt_txt;
             fullDate = fullDate.split(' ');
-            dayDate.html(fullDate[0]);
+            fullDate = fullDate[0].split('-');
+            dayDate.html(fullDate[1] + '/' + fullDate[2] + '/' + fullDate[0]);
             dayContent.append(dayDate);
             
             // an icon representation of weather conditions
@@ -145,6 +150,7 @@ function generateFutureForecast(thisCity) {
     })
 }
 
+// WHEN I view the UV index, THEN I am presented with a color that indicates whether the conditions are favorable, moderate, or severe
 function getUV(lat, lon) {
     var url = 'https://api.openweathermap.org/data/2.5/uvi?lat=' + lat + '&lon=' + lon + '&appid=' + api;
 
@@ -174,7 +180,7 @@ function getUV(lat, lon) {
     });
 }
 
-// when the user clicks on a city in the search history, then they are presented w/ current and future conditions for that city
+// WHEN I click on a city in the search history, THEN I am again presented with current and future conditions for that city
 searchList.on("click", function(event) {
     getWeather($(event.target).data('city'));
 });
@@ -187,6 +193,9 @@ function addToSearchList(thisCity) {
     newCity.html(thisCity);
 
     searchList.prepend(newCity);
+
+    cities.push(thisCity);
+    localStorage.setItem('cities', JSON.stringify(cities));
 }
 
 // display an icon representation of weather conditions
@@ -225,3 +234,24 @@ function getEmoji(weatherId) {
         return '☁️';
     }
 }
+
+// WHEN I open the weather dashboard, THEN I am presented with the last searched city forecast
+function init() {
+    var storedCities = JSON.parse(localStorage.getItem('cities'));
+
+    if (storedCities !== null) {
+        cities = storedCities;
+
+        for (var i = 0; i < cities.length; i++) {
+            var newCity = $("<li>");
+            newCity.addClass("list-group-item");
+            newCity.attr("data-city", cities[i]);
+            newCity.html(cities[i]);
+            searchList.prepend(newCity);
+        }
+
+        getWeather(cities[cities.length - 1]);
+    }
+}
+
+init();

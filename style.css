@@ -14,6 +14,11 @@ span {
     color: black;
 }
 
+li:hover {
+    font-weight: bold;
+    cursor: pointer;
+}
+
 .bg-future {
     background-color: lightskyblue;
     color: white;
@@ -21,20 +26,25 @@ span {
 
 .uv-low {
     background-color: green;
+    color: black;
 }
 
 .uv-mod {
     background-color: yellow;
+    color: black;
 }
 
 .uv-high {
     background-color: orange;
+    color: black;
 }
 
 .uv-vHigh {
     background-color: red;
+    color: black;
 }
 
 .uv-extreme {
     background-color: purple;
+    color: black;
 }
