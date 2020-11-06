@@ -13,18 +13,28 @@
     </header>
     <div class="container">
         <div class="row">
-            <aside class="card col-12 col-sm-12 col-md-4 col-lg-3">
-                <h5>Search for a City:</h5>
-                <form id="city-form" class="form-inline">
-                    <div class="form-group mb-2">
-                        <label for="city-input" class="sr-only">City</label>
-                        <input type="text" class="form-control" id="city-input" style="width: 125px;">
+            <aside class="col-12 col-sm-12 col-md-4 col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-sm-5 col-md-12 col-lg-12">
+                                <h5 class="card-title">Search for a City:</h5>
+                            </div>
+                            <div class="col-12 col-sm-7 col-md-12 col-lg-12">
+                                <form id="city-form card-text" class="form-inline">
+                                    <div class="form-group mb-2">
+                                        <label for="city-input" class="sr-only">City</label>
+                                        <input type="text" class="form-control" id="city-input" style="width: 115px;">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mb-2"><i class="fas fa-search"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="search-list list-group list-group-flush card-text"></ul>
                     </div>
-                    <button type="submit" class="btn btn-primary mb-2"><i class="fas fa-search"></i></button>
-                </form>
-                <ul class="search-list list-group list-group-flush"></ul>
+                </div>
             </aside>
-            <main class="col-12 col-sm-12 col-md-7 col-lg-8">
+            <main class="col-12 col-sm-12 col-md-8 col-lg-9">
                 <div class="row card">
                     <div class="city-info card-body col"></div>
                 </div>

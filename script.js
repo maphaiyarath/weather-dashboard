@@ -1,6 +1,3 @@
-// WHEN I open the weather dashboard THEN I am presented with the last searched city forecast
-// need to fix date on future cards
-
 var api = '5b4ffa60539e06714e2f431edfcd0ba0';
 var cities = [];
 var cityForm = $("#city-form");
@@ -96,23 +93,20 @@ function generateFutureForecast(thisCity) {
         url,
         method: "GET"
     }).then(function(res) {
-        var titleRow = $("<div>");
-        titleRow.addClass("row");
-        futureForecast.append(titleRow);
-
         var forecastTitle = $("<h3>");
         forecastTitle.addClass("card-title");
         forecastTitle.html('5-Day Forecast:');
-        titleRow.append(forecastTitle);
-        
-        var daysRow = $("<div>");
-        daysRow.addClass("row card-text");
-        futureForecast.append(daysRow);
+        futureForecast.append(forecastTitle);
 
+        var deck = $("<div>");
+        deck.addClass("row no-gutters justify-content-start");
+        futureForecast.append(deck);
+        
         for (var i = 7; i < res.list.length; i += 8) {
             var dayCard = $("<div>");
-            dayCard.addClass("card bg-future col-7 col-sm-6 col-md-6 col-lg-4");
-            daysRow.append(dayCard);
+            dayCard.addClass("card bg-future");
+            dayCard.attr("style", "width: 155px;");
+            deck.append(dayCard);
             
             var dayContent = $("<div>");
             dayContent.addClass("card-body text-center");
@@ -195,6 +189,7 @@ function addToSearchList(thisCity) {
     searchList.prepend(newCity);
 
     cities.push(thisCity);
+    
     localStorage.setItem('cities', JSON.stringify(cities));
 }
 
