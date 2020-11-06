@@ -11,7 +11,7 @@ var searchList = $(".search-list");
 cityForm.on("submit", function(event) {
     event.preventDefault();
     city = cityInput.val().trim();
-
+    
     // THEN I am presented with current and future conditions for that city
     getWeather(city);
     cityInput.val('');
