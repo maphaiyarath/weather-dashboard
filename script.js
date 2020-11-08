@@ -102,8 +102,8 @@ function generateFutureForecast(thisCity) {
         var deck = $("<div>");
         deck.addClass("row no-gutters justify-content-start");
         futureForecast.append(deck);
-        
-        for (var i = 0; i < res.list.length; i += 8) {
+
+        for (var i = 7; i < res.list.length; i += 8) {
             var dayCard = $("<div>");
             dayCard.addClass("card bg-future");
             dayCard.attr("style", "width: 135px;");
