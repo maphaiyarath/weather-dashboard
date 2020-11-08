@@ -1,5 +1,7 @@
 # Server-Side APIs: Weather Dashboard
 
+![Weather Dashboard](./dashboard.png)
+
 You can see the deployed app [here](https://maphaiyarath.github.io/weather-dashboard).
 
 ## Table of Contents

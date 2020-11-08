@@ -1,4 +1,5 @@
 var api = '5b4ffa60539e06714e2f431edfcd0ba0';
+var clearBtn = $("#clearBtn");
 var cities = [];
 var cityForm = $("#city-form");
 var cityInfo = $(".city-info");
@@ -102,10 +103,10 @@ function generateFutureForecast(thisCity) {
         deck.addClass("row no-gutters justify-content-start");
         futureForecast.append(deck);
         
-        for (var i = 7; i < res.list.length; i += 8) {
+        for (var i = 0; i < res.list.length; i += 8) {
             var dayCard = $("<div>");
             dayCard.addClass("card bg-future");
-            dayCard.attr("style", "width: 155px;");
+            dayCard.attr("style", "width: 135px;");
             deck.append(dayCard);
             
             var dayContent = $("<div>");
@@ -113,7 +114,7 @@ function generateFutureForecast(thisCity) {
             dayCard.append(dayContent);
 
             // the date
-            var dayDate = $("<h5>");
+            var dayDate = $("<h6>");
             dayDate.addClass("card-title");
             var fullDate = res.list[i].dt_txt;
             fullDate = fullDate.split(' ');
@@ -131,13 +132,13 @@ function generateFutureForecast(thisCity) {
             // the temperature, converted from kelvin to fahrenheit
             var temp = $("<p>");
             var tempCalc = parseInt(res.list[i].main.temp) * 9 / 5 - 459.67;
-            temp.addClass("card-text");
+            temp.addClass("card-text").attr("style", "font-size: 12px;");
             temp.html('Temp: ' + tempCalc.toFixed(2) + '°F');
             dayContent.append(temp);
 
             // the humidity
             var humidity = $("<p>");
-            humidity.addClass("card-text");
+            humidity.addClass("card-text").attr("style", "font-size: 12px;");
             humidity.html('Humidity: ' + res.list[i].main.humidity + '%');
             dayContent.append(humidity);
         }
@@ -248,5 +249,12 @@ function init() {
         getWeather(cities[cities.length - 1]);
     }
 }
+
+// clear search list
+clearBtn.on("click", function(event) {
+    searchList.empty();
+    cities = [];
+    localStorage.removeItem('cities');
+});
 
 init();
