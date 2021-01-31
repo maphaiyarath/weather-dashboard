@@ -1,6 +1,6 @@
 # Server-Side APIs: Weather Dashboard
 
-![Weather Dashboard](./dashboard.png)
+![Weather Dashboard](./og-weather-dash.png)
 
 You can see the deployed app [here](https://maphaiyarath.github.io/weather-dashboard).
 
